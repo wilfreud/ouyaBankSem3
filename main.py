@@ -1,9 +1,36 @@
 import tkinter as tk
+import dbCall
+
+bank_title = "Osborne_Bank v1.1"
 
 mainBank = tk.Tk()
+
 # Window Settings
-mainBank.title("Osborne_Bank v1.1")
+mainBank.title(bank_title)
 mainBank.geometry("500x250")
+
+def logger(login, password):
+    # response = dbCall.login()
+    print()
+
+def newUser(phone, card_id, password, c_password):
+    response = dbCall.register()
+
+    def error_show(error_log):
+        tk.messagebox.showerror("Registration Error", error_log)
+
+    if (response[0] != 0):
+        error_show(response[1])
+    else:
+        yess = tk.TK()
+        yess.title("Registration done")
+        yess.geometry("350x100")
+        msg = tk.Label(yess, text="Registration Successful !")
+        from time import sleep
+        sleep(2)
+        yess.quit()
+        
+
 
 def tk_login(): # Login Window
     login_window = tk.Tk()
@@ -58,15 +85,31 @@ def tk_register(): # Register Window
     register_validate.grid(row=6, column=1)
 
 
+def tk_about(): # About popup
+    aboutpop = tk.Tk()
+    aboutpop.title(f"About {bank_title}")
+    aboutpop.geometry("400x50")
+    aboutCreator = tk.Label(aboutpop, text="This has been developed by {$$$} inc")
+    aboutCreator.pack()
+
+# Upper menu
+mainmenu = tk.Menu(mainBank)
+onlymenu = tk.Menu(mainmenu, tearoff=0)
+onlymenu.add_command(label="About...", command=tk_about)
+onlymenu.add_separator()
+onlymenu.add_command(label="Exit", command=mainBank.quit)
+mainmenu.add_cascade(label="Stuff", menu=onlymenu)
+
 # Welcome screen
 welcome_text = tk.Label(mainBank, text="Welcome to Osborne Bank Account Manager")
-welcome_text.pack()
-
 login_btn = tk.Button(mainBank, text="Login", width="10", height="2", command=tk_login)
+register_btn = tk.Button(mainBank, text="Register", width="10", height="2", command=tk_register)
+
+welcome_text.pack(pady=20)
 login_btn.pack()
-login_btn = tk.Button(mainBank, text="Register", width="10", height="2", command=tk_register)
-login_btn.pack()
+register_btn.pack()
 
 
-
+# Main Loop
+mainBank.config(menu=mainmenu)
 mainBank.mainloop()
