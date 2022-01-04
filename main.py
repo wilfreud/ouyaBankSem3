@@ -1,5 +1,5 @@
 import tkinter as tk
-import dbCall
+import database
 
 bank_title = "Osborne_Bank v1.1"
 
@@ -10,11 +10,11 @@ mainBank.title(bank_title)
 mainBank.geometry("500x250")
 
 def logger(login, password):
-    # response = dbCall.login()
-    print()
+    premult = database.finder(login, password)
+    print(premult)
 
 def newUser(phone, card_id, password, c_password):
-    response = dbCall.register()
+    print()
 
     def error_show(error_log):
         tk.messagebox.showerror("Registration Error", error_log)
@@ -31,20 +31,19 @@ def newUser(phone, card_id, password, c_password):
         yess.quit()
         
 
-
 def tk_login(): # Login Window
     login_window = tk.Tk()
     login_window.title("Log into your account")
     login_window.geometry("400x200")
 
     # Inputs labels
-    login_text = tk.Label(login_window, text="Login :").grid(row=0)
+    login_text = tk.Label(login_window, text="INE :").grid(row=0)
     login_passcode = tk.Label(login_window, text="Password :").grid(row=1)
     
     # Inputs
     login_field = tk.Entry(login_window)
     login_passcode = tk.Entry(login_window, show='*')
-    login_validate = tk.Button(login_window, text="Login", width="8", height="1")
+    login_validate = tk.Button(login_window, text="Login", width="8", height="1", command=lambda: logger(login_field.get(), login_passcode.get()))
 
     # Packing (aligning)...
     login_field.grid(row=0, column=1)    

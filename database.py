@@ -38,6 +38,18 @@ def filler(ine, names0, name1, phone, password):
 
     mydb.commit()
 
+
+def finder(ine, password):
+    # try:
+    request = f"SELECT * FROM clients WHERE INE='{ine}' AND Password=MD5('{password}')"
+    banKursor.execute(request)
+    answers = banKursor.fetchall()
+    if (len(answers) != 0):
+        return 200
+    else:
+        sqlError = "Unexistent account"
+        return sqlError
+
 basic_tasks()
 setup_table()
-filler("sd", "dfb", " vbbbvb", "3453434", "dsfs")
+
