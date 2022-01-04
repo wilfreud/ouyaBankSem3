@@ -27,7 +27,7 @@ def newUser(phone, card_id, password, c_password):
         yess.geometry("350x100")
         msg = tk.Label(yess, text="Registration Successful !")
         from time import sleep
-        sleep(2)
+        sleep(3)
         yess.quit()
         
 
