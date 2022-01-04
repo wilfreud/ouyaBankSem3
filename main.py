@@ -12,13 +12,27 @@ mainBank.geometry("500x250")
 
 def logger(login, password, stif):
     premult = database.finder(login.get(), password.get())
+        
+    def cancelPopup(deleteme, del2):
+        deleteme.destroy()
+        del2.destroy()
+
     if (premult == 200):
         wellog = tk.Tk()
         wellog.title("Successfully logged !")
-        welLab = tk.Label(wellog, text=f"Welcome, {login}")
+        welLab = tk.Label(wellog, text=f"Welcome, {login.get()}")
         welLab.pack()
-        wellog.quit()
-        stif.quit()
+        welOk = tk.Button(wellog, text="Close", command=lambda: cancelPopup(wellog, stif))
+        welOk.pack()
+    else:
+        logEror = tk.Tk()
+        logEror.title("Connection impossible")
+        logEror.geometry("300x50")
+        logEtext = tk.Label(logEror, text="Inexistent account")
+        logEtext.pack()
+
+        logEbtn = tk.Button(logEror, text="close", width=8, height=1, command=lambda: cancelPopup(logEror))
+        logEbtn.pack()
 
 
 def newUser(phone, card_id, password, c_password, last_name, first_names, wdow):
@@ -74,7 +88,7 @@ def tk_login(): # Login Window
     # Inputs
     login_field = tk.Entry(login_window)
     login_passcode = tk.Entry(login_window, show='*')
-    login_validate = tk.Button(login_window, text="Login", width="8", height="1", command=lambda: logger(login_field, login_passcode, login_field))
+    login_validate = tk.Button(login_window, text="Login", width="8", height="1", command=lambda: logger(login_field, login_passcode, login_window))
 
     # Packing (aligning)...
     login_field.grid(row=0, column=1)    
