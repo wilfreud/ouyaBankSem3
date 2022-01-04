@@ -40,7 +40,6 @@ def filler(ine, names0, name1, phone, password):
 
 
 def finder(ine, password):
-    # try:
     request = f"SELECT * FROM clients WHERE INE='{ine}' AND Password=MD5('{password}')"
     banKursor.execute(request)
     answers = banKursor.fetchall()

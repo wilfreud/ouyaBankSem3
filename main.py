@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import database
 
 bank_title = "Osborne_Bank v1.1"
@@ -9,26 +10,56 @@ mainBank = tk.Tk()
 mainBank.title(bank_title)
 mainBank.geometry("500x250")
 
-def logger(login, password):
-    premult = database.finder(login, password)
-    print(premult)
+def logger(login, password, stif):
+    premult = database.finder(login.get(), password.get())
+    if (premult == 200):
+        wellog = tk.Tk()
+        wellog.title("Successfully logged !")
+        welLab = tk.Label(wellog, text=f"Welcome, {login}")
+        welLab.pack()
+        wellog.quit()
+        stif.quit()
 
-def newUser(phone, card_id, password, c_password):
+
+def newUser(phone, card_id, password, c_password, last_name, first_names, wdow):
     print()
 
     def error_show(error_log):
-        tk.messagebox.showerror("Registration Error", error_log)
+        messagebox.showerror("Registration Error", error_log)
 
-    if (response[0] != 0):
-        error_show(response[1])
+    def exiter(mee):
+        wdow.destroy()
+        mee.destroy()
+
+    if (len(str(first_names)) < 2 or str(first_names).isspace()):
+        error_show("First name(s) must have an acceptable lenght")
+
+    elif (len(str(last_name)) < 2 or str(last_name).isspace()):
+        error_show("Last name must have an acceptable lenght")
+
+    elif (not(str(phone).isdigit()) or (len(str(phone)) < 9)):
+        error_show("Phone Number is wrong")
+
+    elif (not(str(card_id).isdigit()) or len(str(card_id)) < 9):
+        error_show("INE must be digits only and at least 9")
+
+    elif (password == ""): 
+        error_show("Passwords must not be null")
+
+    elif (len(str(password)) < 4 or str(password).isspace()):
+        error_show("Password must be at least 4 characters")
+
+    elif  (password != c_password):
+        error_show("Passwrds don't match")
     else:
-        yess = tk.TK()
+        yess = tk.Tk()
         yess.title("Registration done")
         yess.geometry("350x100")
-        msg = tk.Label(yess, text="Registration Successful !")
-        from time import sleep
-        sleep(3)
-        yess.quit()
+        msg = tk.Label(yess, text="Registration Successful!\nPlease go login")
+        msg.pack()
+        click = tk.Button(yess, text="OK", command=lambda: exiter(yess))
+        click.pack()
+        # yess.quit()
         
 
 def tk_login(): # Login Window
@@ -43,7 +74,7 @@ def tk_login(): # Login Window
     # Inputs
     login_field = tk.Entry(login_window)
     login_passcode = tk.Entry(login_window, show='*')
-    login_validate = tk.Button(login_window, text="Login", width="8", height="1", command=lambda: logger(login_field.get(), login_passcode.get()))
+    login_validate = tk.Button(login_window, text="Login", width="8", height="1", command=lambda: logger(login_field, login_passcode, login_field))
 
     # Packing (aligning)...
     login_field.grid(row=0, column=1)    
@@ -53,6 +84,7 @@ def tk_login(): # Login Window
 
 def tk_register(): # Register Window
     register_window = tk.Tk()
+    register_window.focus_set()
     register_window.title("Create a bank account")
     register_window.geometry("400x200")
 
@@ -71,7 +103,7 @@ def tk_register(): # Register Window
     register_ine = tk.Entry(register_window)
     register_password = tk.Entry(register_window, show='*')
     register_password_confirm = tk.Entry(register_window, show='*')
-    register_validate = tk.Button(register_window, text="Validate", width="8", height="1")
+    register_validate = tk.Button(register_window, text="Validate", width="8", height="1", command=lambda: newUser(register_phone_num.get(), register_ine.get(), register_password.get(), register_password_confirm.get(), register_last_name.get(), register_first_names.get(), register_window))
 
 
     # Linking fields & labels | & |Packing
