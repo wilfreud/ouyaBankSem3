@@ -10,7 +10,11 @@ mainBank = tk.Tk()
 mainBank.title(bank_title)
 mainBank.geometry("500x250")
 
-def logger(login, password, stif):
+def scrempty(*objs): # Empty screen
+    for i in objs:
+        i.destroy()
+
+def logger(login, password, stif): # Make a user log in
     premult = database.finder(login.get(), password.get())
         
     def cancelPopup(deleteme, del2):
@@ -33,9 +37,9 @@ def logger(login, password, stif):
 
         logEbtn = tk.Button(logEror, text="close", width=8, height=1, command=lambda: cancelPopup(logEror))
         logEbtn.pack()
+        scrempty()
 
-
-def newUser(phone, card_id, password, c_password, last_name, first_names, wdow):
+def newUser(phone, card_id, password, c_password, last_name, first_names, wdow): # Register new user
     print()
 
     def error_show(error_log):
@@ -66,6 +70,7 @@ def newUser(phone, card_id, password, c_password, last_name, first_names, wdow):
     elif  (password != c_password):
         error_show("Passwrds don't match")
     else:
+        database.filler(card_id, first_names, last_name, phone, password)
         yess = tk.Tk()
         yess.title("Registration done")
         yess.geometry("350x100")
@@ -73,9 +78,7 @@ def newUser(phone, card_id, password, c_password, last_name, first_names, wdow):
         msg.pack()
         click = tk.Button(yess, text="OK", command=lambda: exiter(yess))
         click.pack()
-        # yess.quit()
         
-
 def tk_login(): # Login Window
     login_window = tk.Tk()
     login_window.title("Log into your account")
@@ -94,7 +97,6 @@ def tk_login(): # Login Window
     login_field.grid(row=0, column=1)    
     login_passcode.grid(row=1, column=1)
     login_validate.grid(row=2, column=1)
-
 
 def tk_register(): # Register Window
     register_window = tk.Tk()
@@ -129,12 +131,11 @@ def tk_register(): # Register Window
     register_password_confirm.grid(row=5, column=1)
     register_validate.grid(row=6, column=1)
 
-
 def tk_about(): # About popup
     aboutpop = tk.Tk()
     aboutpop.title(f"About {bank_title}")
     aboutpop.geometry("400x50")
-    aboutCreator = tk.Label(aboutpop, text="This has been developed by {$$$} inc")
+    aboutCreator = tk.Label(aboutpop, text="This has been developed by Ashborne Incorporated Systems\n©Commodore - 2022\nAll Rights Reserved")
     aboutCreator.pack()
 
 # Upper menu
@@ -145,15 +146,16 @@ onlymenu.add_separator()
 onlymenu.add_command(label="Exit", command=mainBank.quit)
 mainmenu.add_cascade(label="Stuff", menu=onlymenu)
 
+
 # Welcome screen
 welcome_text = tk.Label(mainBank, text="Welcome to Osborne Bank Account Manager")
 login_btn = tk.Button(mainBank, text="Login", width="10", height="2", command=tk_login)
+
 register_btn = tk.Button(mainBank, text="Register", width="10", height="2", command=tk_register)
 
 welcome_text.pack(pady=20)
-login_btn.pack()
-register_btn.pack()
-
+login_btn.pack(pady=4)
+register_btn.pack(pady=4)
 
 # Main Loop
 mainBank.config(menu=mainmenu)
